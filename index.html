@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sorry 🥺</title>
+  <style>
+    :root{
+      --bg1:#ffd6e7;
+      --bg2:#d7f2ff;
+      --card:#ffffffcc;
+      --text:#222;
+      --yes:#ff2d7a;
+      --no:#4b5563;
+    }
+    *{box-sizing:border-box;font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;}
+    body{
+      margin:0; min-height:100vh;
+      background: radial-gradient(circle at 20% 10%, var(--bg2), transparent 55%),
+                  radial-gradient(circle at 80% 30%, var(--bg1), transparent 60%),
+                  linear-gradient(135deg, #fff, #f7fbff);
+      display:flex; align-items:center; justify-content:center;
+      padding:24px;
+      overflow:hidden;
+    }
+    .wrap{width:min(720px, 96vw); position:relative;}
+    .card{
+      background:var(--card);
+      border:1px solid #ffffff;
+      box-shadow: 0 18px 60px rgba(0,0,0,.12);
+      border-radius:22px;
+      padding:26px;
+      backdrop-filter: blur(10px);
+      position:relative;
+      overflow:hidden;
+    }
+    .title{font-size:28px; font-weight:800; color:var(--text); margin:0 0 6px;}
+    .sub{margin:0 0 18px; color:#374151; line-height:1.4;}
+    .pill{
+      display:inline-flex; gap:10px; align-items:center;
+      padding:10px 14px; border-radius:999px;
+      background:#ffffffa6; border:1px solid #fff;
+      font-weight:700;
+    }
+    a.link{
+      color:#0b57d0; text-decoration:underline;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .center{
+      display:flex; align-items:center; justify-content:center;
+      text-align:center;
+      min-height:240px;
+    }
+
+    .qbox{
+      text-align:center;
+      padding:10px 10px 0;
+    }
+    .emoji{font-size:56px; line-height:1; margin-bottom:8px;}
+    .question{font-size:30px; font-weight:900; margin:0 0 8px;}
+    .hint{font-size:13px; color:#6b7280; margin:0 0 14px;}
+    .btnRow{
+      position:relative;
+      height:92px;
+      width:min(520px, 90%);
+      margin:0 auto;
+    }
+    button{
+      border:none; cursor:pointer;
+      padding:14px 22px;
+      border-radius:999px;
+      font-weight:900;
+      font-size:16px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.12);
+      transition: transform .12s ease, width .12s ease, height .12s ease;
+      user-select:none;
+    }
+    button:active{transform:scale(.98);}
+    #yesBtn{
+      background:var(--yes);
+      color:white;
+      position:absolute;
+      left:10%;
+      top:18px;
+    }
+    #noBtn{
+      background:#e5e7eb;
+      color:#111827;
+      position:absolute;
+      left:62%;
+      top:18px;
+    }
+
+    .final{
+      display:none;
+      text-align:center;
+      padding:14px 10px 6px;
+    }
+    .final h2{margin:6px 0 8px; font-size:34px;}
+    .letter{
+      margin:12px auto 0;
+      width:min(560px, 92%);
+      background:#fff;
+      border:1px solid #f1f5f9;
+      border-radius:18px;
+      padding:18px 18px 16px;
+      box-shadow: 0 16px 40px rgba(0,0,0,.08);
+      text-align:left;
+      line-height:1.6;
+      color:#111827;
+    }
+    .sig{margin-top:12px; font-weight:900;}
+    .tiny{
+      margin-top:14px;
+      color:#6b7280;
+      font-size:12px;
+    }
+
+    /* confetti */
+    .confetti{
+      position:fixed;
+      top:-10px;
+      font-size:22px;
+      animation: fall linear forwards;
+      pointer-events:none;
+      filter: drop-shadow(0 6px 6px rgba(0,0,0,.12));
+    }
+    @keyframes fall{
+      to{
+        transform: translateY(110vh) rotate(720deg);
+        opacity: .1;
+      }
+    }
+
+    /* simple fade */
+    .fadeIn{animation: fadeIn .28s ease both;}
+    @keyframes fadeIn{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <!-- START SCREEN -->
+      <div id="start" class="center fadeIn">
+        <div>
+          <div class="pill">🔗 Click the link:</div>
+          <h1 class="title" style="margin-top:14px;">I made something for you…</h1>
+          <p class="sub">Open this <a class="link" id="sorryLink">SORRY</a> link 🥺</p>
+          <p class="sub" style="font-size:13px;color:#6b7280;margin-top:10px;">
+            (Don’t worry… it’s not a scam 😅)
+          </p>
+        </div>
+      </div>
+
+      <!-- QUESTION SCREEN -->
+      <div id="ask" class="qbox" style="display:none;">
+        <div class="emoji">🥺</div>
+        <p class="question" id="qText">Will you forgive me?</p>
+        <p class="hint" id="hintText">“Nahi” button thoda shy hai…</p>
+
+        <div class="btnRow" id="arena">
+          <button id="yesBtn">Maan jao ❤️</button>
+          <button id="noBtn">Nahi 🙄</button>
+        </div>
+      </div>
+
+      <!-- FINAL SCREEN -->
+      <div id="final" class="final">
+        <div class="emoji">🫂</div>
+        <h2>YAY! Thank you 😭💖</h2>
+        <div class="letter" id="letterBox">
+          <div id="letterText"></div>
+          <div class="sig" id="sigText">— Yours</div>
+        </div>
+        <div class="tiny">Tip: text customize karna hai? Neeche JS me name/message edit kar do.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ====== QUICK CUSTOMIZE ======
+    const TO_NAME   = "Tum";          // e.g., "Priya"
+    const FROM_NAME = "Main";         // e.g., "Arpit"
+    const MAIN_LINE = "I’m genuinely sorry for hurting you. I know I messed up.";
+    const PROMISE   = "I’ll do better, listen more, and never repeat it.";
+    const LAST_LINE = "Please maaf kar do… ek tight hug? 🫂";
+
+    // Optional: change question text
+    const QUESTION_TEXT = `${TO_NAME}, maaf kar doge?`;
+
+    // ====== LOGIC ======
+    const start = document.getElementById("start");
+    const ask   = document.getElementById("ask");
+    const final = document.getElementById("final");
+
+    const sorryLink = document.getElementById("sorryLink");
+    const qText = document.getElementById("qText");
+    const hintText = document.getElementById("hintText");
+
+    const arena = document.getElementById("arena");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn  = document.getElementById("noBtn");
+
+    const letterText = document.getElementById("letterText");
+    const sigText = document.getElementById("sigText");
+
+    let dodgeCount = 0;
+
+    qText.textContent = QUESTION_TEXT;
+    letterText.innerHTML =
+      `<b>Hey ${TO_NAME},</b><br><br>
+       ${MAIN_LINE}<br>
+       ${PROMISE}<br><br>
+       ${LAST_LINE}<br><br>
+       <span style="color:#6b7280;font-size:13px;">(Thank you for being patient with me 🥺)</span>`;
+    sigText.textContent = `— ${FROM_NAME}`;
+
+    function showAsk(){
+      start.style.display = "none";
+      ask.style.display = "block";
+      ask.classList.add("fadeIn");
+    }
+
+    sorryLink.addEventListener("click", showAsk);
+
+    function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+    function moveNoButton(){
+      dodgeCount++;
+
+      const rect = arena.getBoundingClientRect();
+      const b = noBtn.getBoundingClientRect();
+
+      // keep within arena
+      const padding = 8;
+      const maxX = rect.width  - b.width  - padding;
+      const maxY = rect.height - b.height - padding;
+
+      const x = Math.random() * maxX + padding;
+      const y = Math.random() * maxY + padding;
+
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top  = `${y}px`;
+
+      // Make "Yes" grow a bit each dodge (like the video)
+      const scale = 1 + Math.min(dodgeCount * 0.12, 1.0);
+      yesBtn.style.transform = `scale(${scale})`;
+
+      // playful hints
+      const hints = [
+        "Arre! pakad hi nahi paa rahe 😅",
+        "Nahi button bhaag gaya 🏃‍♂️",
+        "Bas bas… maan jao na 🥺",
+        "No: ‘main nahi milungi’ 🙈",
+        "Try again 😛"
+      ];
+      hintText.textContent = hints[dodgeCount % hints.length];
+    }
+
+    // Dodge on hover / focus / touch (mobile)
+    ["mouseenter","mouseover","pointerenter","touchstart","focus"].forEach(evt=>{
+      noBtn.addEventListener(evt, (e)=>{
+        // On touch, prevent click selection
+        if(evt === "touchstart") e.preventDefault();
+        moveNoButton();
+      }, {passive:false});
+    });
+
+    // If somehow clicked, still dodge
+    noBtn.addEventListener("click", (e)=>{
+      e.preventDefault();
+      moveNoButton();
+    });
+
+    function confettiBlast(){
+      const emojis = ["💖","✨","🎉","🌸","🫶","💫","🥳"];
+      for(let i=0;i<80;i++){
+        const el = document.createElement("div");
+        el.className = "confetti";
+        el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        el.style.left = Math.random()*100 + "vw";
+        el.style.animationDuration = (2.2 + Math.random()*2.2) + "s";
+        el.style.opacity = (0.6 + Math.random()*0.4);
+        document.body.appendChild(el);
+        setTimeout(()=>el.remove(), 5200);
+      }
+    }
+
+    yesBtn.addEventListener("click", ()=>{
+      ask.style.display = "none";
+      final.style.display = "block";
+      final.classList.add("fadeIn");
+      confettiBlast();
+    });
+  </script>
+</body>
+</html>
