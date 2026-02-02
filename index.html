@@ -118,7 +118,6 @@
       font-size:12px;
     }
 
-    /* confetti */
     .confetti{
       position:fixed;
       top:-10px;
@@ -134,7 +133,6 @@
       }
     }
 
-    /* simple fade */
     .fadeIn{animation: fadeIn .28s ease both;}
     @keyframes fadeIn{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)}}
   </style>
@@ -142,14 +140,19 @@
 <body>
   <div class="wrap">
     <div class="card">
+
       <!-- START SCREEN -->
       <div id="start" class="center fadeIn">
         <div>
           <div class="pill">🔗 Click the link:</div>
           <h1 class="title" style="margin-top:14px;">I made something for you…</h1>
-          <p class="sub">Open this <a class="link" id="sorryLink">SORRY</a> link 🥺</p>
+
+          <!-- changed SORRY -> SCAM -->
+          <p class="sub">Open the <a class="link" id="sorryLink">SCAM</a> link 😈</p>
+
+          <!-- changed small text -->
           <p class="sub" style="font-size:13px;color:#6b7280;margin-top:10px;">
-            (Don’t worry… it’s not a scam 😅)
+            (Bas prank hai… gussa mat hona 😅)
           </p>
         </div>
       </div>
@@ -169,25 +172,27 @@
       <!-- FINAL SCREEN -->
       <div id="final" class="final">
         <div class="emoji">🫂</div>
-        <h2>YAY! Thank you 😭💖</h2>
-        <div class="letter" id="letterBox">
+        <h2>YAY! Thank you 😂💖</h2>
+        <div class="letter">
           <div id="letterText"></div>
-          <div class="sig" id="sigText">— Yours</div>
+          <div class="sig" id="sigText">— Avanish</div>
         </div>
-        <div class="tiny">Tip: text customize karna hai? Neeche JS me name/message edit kar do.</div>
+
+        <!-- changed tip line -->
+        <div class="tiny">Made with ❤️ by Avanish</div>
       </div>
     </div>
   </div>
 
   <script>
-    // ====== QUICK CUSTOMIZE ======
-    const TO_NAME   = "Tum";          // e.g., "Priya"
-    const FROM_NAME = "Main";         // e.g., "Arpit"
+    // ====== QUICK CUSTOMIZE (already set for you) ======
+    const TO_NAME   = "Himanshi";    // <-- Hey Himanshi
+    const FROM_NAME = "Avanish";
+
     const MAIN_LINE = "I’m genuinely sorry for hurting you. I know I messed up.";
     const PROMISE   = "I’ll do better, listen more, and never repeat it.";
     const LAST_LINE = "Please maaf kar do… ek tight hug? 🫂";
 
-    // Optional: change question text
     const QUESTION_TEXT = `${TO_NAME}, maaf kar doge?`;
 
     // ====== LOGIC ======
@@ -209,6 +214,8 @@
     let dodgeCount = 0;
 
     qText.textContent = QUESTION_TEXT;
+
+    // Hey Himanshi + signature
     letterText.innerHTML =
       `<b>Hey ${TO_NAME},</b><br><br>
        ${MAIN_LINE}<br>
@@ -225,15 +232,12 @@
 
     sorryLink.addEventListener("click", showAsk);
 
-    function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
-
     function moveNoButton(){
       dodgeCount++;
 
       const rect = arena.getBoundingClientRect();
       const b = noBtn.getBoundingClientRect();
 
-      // keep within arena
       const padding = 8;
       const maxX = rect.width  - b.width  - padding;
       const maxY = rect.height - b.height - padding;
@@ -244,11 +248,10 @@
       noBtn.style.left = `${x}px`;
       noBtn.style.top  = `${y}px`;
 
-      // Make "Yes" grow a bit each dodge (like the video)
+      // Yes grows
       const scale = 1 + Math.min(dodgeCount * 0.12, 1.0);
       yesBtn.style.transform = `scale(${scale})`;
 
-      // playful hints
       const hints = [
         "Arre! pakad hi nahi paa rahe 😅",
         "Nahi button bhaag gaya 🏃‍♂️",
@@ -259,16 +262,13 @@
       hintText.textContent = hints[dodgeCount % hints.length];
     }
 
-    // Dodge on hover / focus / touch (mobile)
     ["mouseenter","mouseover","pointerenter","touchstart","focus"].forEach(evt=>{
       noBtn.addEventListener(evt, (e)=>{
-        // On touch, prevent click selection
         if(evt === "touchstart") e.preventDefault();
         moveNoButton();
       }, {passive:false});
     });
 
-    // If somehow clicked, still dodge
     noBtn.addEventListener("click", (e)=>{
       e.preventDefault();
       moveNoButton();
